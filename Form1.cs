@@ -17,11 +17,13 @@ namespace TimelapseRecorder
     {
         private String screenshotPath = AppDomain.CurrentDomain.BaseDirectory + "tmp\\";
         private Boolean isRecording = false;
+        private Boolean isGenerating = false;
         private ImageFormat screenshotFormat = ImageFormat.Jpeg;
         private int screenshotIntervalSeconds = 1;
         private String screenshotExtension = "jpg";
         private int selectedScreen = 0;
         private Boolean includeTaskbar = false;
+        private String formTitle = "Timelapse Recorder";
 
         class VideoProcessorStructure
         {
@@ -70,7 +72,7 @@ namespace TimelapseRecorder
 
         private void ScreenshotPathTextbox_Click(object sender, EventArgs e)
         {
-            if (isRecording)
+            if (isRecording || isGenerating)
             {
                 return;
             }
@@ -91,10 +93,14 @@ namespace TimelapseRecorder
             {
                 EnableScreenshotControls();
                 ScreenshotTimer.Enabled = false;
+                RecordingIndicationLabel.Visible = false;
+                this.Text = formTitle;
             }
             else
             {
                 DisableScreenshotControls();
+                this.Text = formTitle + " (Recording)";
+                RecordingIndicationLabel.Visible = true;
 
                 if (!Directory.Exists(screenshotPath))
                 {
@@ -105,29 +111,6 @@ namespace TimelapseRecorder
 
                 ScreenshotTimer.Interval = screenshotIntervalSeconds * 1000;
                 ScreenshotTimer.Enabled = true;
-            }
-        }
-
-        private void ScreenshotFormatCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (ScreenshotFormatCombobox.SelectedIndex)
-            {
-                case 0:
-                    screenshotFormat = ImageFormat.Jpeg;
-                    screenshotExtension = "jpg";
-                    break;
-                case 1:
-                    screenshotFormat = ImageFormat.Bmp;
-                    screenshotExtension = "bmp";
-                    break;
-                case 2:
-                    screenshotFormat = ImageFormat.Gif;
-                    screenshotExtension = "gif";
-                    break;
-                case 3:
-                    screenshotFormat = ImageFormat.Png;
-                    screenshotExtension = "png";
-                    break;
             }
         }
 
@@ -180,10 +163,9 @@ namespace TimelapseRecorder
             isRecording = false;
             RecordButton.Text = "Start";
             IntervalNumericUpDown.Enabled = true;
-            ScreenshotFormatCombobox.Enabled = true;
-            RecordingIndicationLabel.Visible = false;
             SelectScreenCombobox.Enabled = true;
             includeTaskbarCheckbox.Enabled = true;
+            GenerateVideoButton.Enabled = true;
         }
 
         private void DisableScreenshotControls()
@@ -191,8 +173,35 @@ namespace TimelapseRecorder
             isRecording = true;
             RecordButton.Text = "Stop";
             IntervalNumericUpDown.Enabled = false;
-            ScreenshotFormatCombobox.Enabled = false;
-            RecordingIndicationLabel.Visible = true;
+            SelectScreenCombobox.Enabled = false;
+            includeTaskbarCheckbox.Enabled = false;
+            GenerateVideoButton.Enabled = false;
+        }
+
+        private void EnableVideoControls()
+        {
+            ScreenshotPathTextbox.Enabled = true;
+            RecordButton.Enabled = true;
+            IntervalNumericUpDown.Enabled = true;
+            SelectScreenCombobox.Enabled = true;
+            includeTaskbarCheckbox.Enabled = true;
+            textBox1.Enabled = true;
+            numericUpDown1.Enabled = true;
+            numericUpDown2.Enabled = true;
+            numericUpDown3.Enabled = true;
+            GenerateVideoButton.Enabled = true;
+        }
+
+        private void DisableVideoControls()
+        {
+            ScreenshotPathTextbox.Enabled = false;
+            RecordButton.Enabled = false;
+            textBox1.Enabled = false;
+            numericUpDown1.Enabled = false;
+            numericUpDown2.Enabled = false;
+            numericUpDown3.Enabled = false;
+            GenerateVideoButton.Enabled = false;
+            IntervalNumericUpDown.Enabled = false;
             SelectScreenCombobox.Enabled = false;
             includeTaskbarCheckbox.Enabled = false;
         }
@@ -204,10 +213,15 @@ namespace TimelapseRecorder
 
         private void GenerateVideoButton_Click(object sender, EventArgs e)
         {
+            isGenerating = true;
+
             vps.inputFolderPath = screenshotPath;
-            vps.outputVideoPath = screenshotPath + "video.mp4";
+            vps.outputVideoPath = screenshotPath + textBox1.Text;
             vps.files.AddRange(Directory.GetFiles(vps.inputFolderPath, "*.jpg", SearchOption.AllDirectories).OrderBy(f => f));
             progressBar1.Maximum = vps.files.Count;
+
+            DisableVideoControls();
+            this.Text = formTitle + " (Generating)";
 
             VideoGeneratorBackgroundWorker.RunWorkerAsync();
             backgroundWorker1.RunWorkerAsync();
@@ -225,7 +239,7 @@ namespace TimelapseRecorder
                 {
                     label7.Text = vps.completedCount + "/" + vps.files.Count;
                 }));
-                Thread.Sleep(1000);
+                Thread.Sleep(250);
                 if (vps.completedCount >= vps.files.Count)
                 {
                     progressBar1.Invoke(new Action(() =>
@@ -245,25 +259,38 @@ namespace TimelapseRecorder
 
         private void VideoGeneratorBackgroundWorker_DoWork_1(object sender, DoWorkEventArgs e)
         {
-            var settings = new VideoEncoderSettings(width: 1920, height: 1080, framerate: 30, codec: VideoCodec.H264);
-            settings.EncoderPreset = EncoderPreset.VerySlow;
-            settings.CRF = 1;
+            int width = Convert.ToInt32(numericUpDown1.Value);
+            int height = Convert.ToInt32(numericUpDown2.Value);
+            int fps = Convert.ToInt32(numericUpDown3.Value);
+            var settings = new VideoEncoderSettings(width: width, height: height, framerate: fps, codec: VideoCodec.H264);
+            settings.EncoderPreset = EncoderPreset.UltraFast;
+            settings.CRF = 17;
             using (var outputFile = MediaBuilder.CreateContainer(vps.outputVideoPath).WithVideo(settings).Create())
             {
                 for (int i = 0; i < vps.files.Count; i++)
                 {
-                    Bitmap bitmap = new Bitmap(Bitmap.FromFile(vps.files.ElementAt(i)));
-                    Rectangle rect = new Rectangle(System.Drawing.Point.Empty, bitmap.Size);
-                    BitmapData bitLock = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                    ImageData bitmapImageData = ImageData.FromPointer(bitLock.Scan0, ImagePixelFormat.Bgr24, bitmap.Size);
+                    using (Bitmap bitmap = new Bitmap(Bitmap.FromFile(vps.files.ElementAt(i))))
+                    {
+                        Rectangle rect = new Rectangle(System.Drawing.Point.Empty, bitmap.Size);
+                        BitmapData bitLock = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                        ImageData bitmapImageData = ImageData.FromPointer(bitLock.Scan0, ImagePixelFormat.Bgr24, bitmap.Size);
 
-                    outputFile.Video.AddFrame(bitmapImageData);
+                        outputFile.Video.AddFrame(bitmapImageData);
 
-                    bitmap.UnlockBits(bitLock);
+                        bitmap.UnlockBits(bitLock);
+                    }
 
                     vps.completedCount++;
                 }
             }
+        }
+
+        private void VideoGeneratorBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            vps = new VideoProcessorStructure();
+            this.Text = formTitle;
+            EnableVideoControls();
+            isGenerating = false;
         }
     }
 }
