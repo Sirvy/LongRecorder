@@ -278,21 +278,23 @@ namespace TimelapseRecorder
             int fps = Convert.ToInt32(numericUpDown3.Value);
             var settings = new VideoEncoderSettings(width: width, height: height, framerate: fps, codec: VideoCodec.H264);
             settings.EncoderPreset = EncoderPreset.UltraFast;
-            settings.CRF = 17;
+            settings.CRF = 21;
             using (var outputFile = MediaBuilder.CreateContainer(vps.outputVideoPath).WithVideo(settings).Create())
             {
                 for (int i = 0; i < vps.files.Count; i++)
                 {
-                    using (Bitmap bitmap = new Bitmap(Bitmap.FromFile(vps.files.ElementAt(i))))
-                    {
-                        Rectangle rect = new Rectangle(System.Drawing.Point.Empty, bitmap.Size);
-                        BitmapData bitLock = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                        ImageData bitmapImageData = ImageData.FromPointer(bitLock.Scan0, ImagePixelFormat.Bgr24, bitmap.Size);
+                    System.Drawing.Image img = System.Drawing.Image.FromFile(vps.files.ElementAt(i));
+                    Bitmap bitmap = new Bitmap(img);
+                    Rectangle rect = new Rectangle(System.Drawing.Point.Empty, img.Size);
+                    BitmapData bitLock = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                    ImageData bitmapImageData = ImageData.FromPointer(bitLock.Scan0, ImagePixelFormat.Bgr24, bitmap.Size);
 
-                        outputFile.Video.AddFrame(bitmapImageData);
+                    outputFile.Video.AddFrame(bitmapImageData);
 
-                        bitmap.UnlockBits(bitLock);
-                    }
+                    bitmap.UnlockBits(bitLock);
+
+                    bitmap.Dispose();
+                    img.Dispose();
 
                     vps.completedCount++;
                 }
