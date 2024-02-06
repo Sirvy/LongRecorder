@@ -6,11 +6,10 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StartupObject>TimelapseRecorder.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Accord.Video" Version="3.8.0" />
-    <PackageReference Include="Accord.Video.FFMPEG" Version="3.8.0" />
     <PackageReference Include="FFMediaToolkit" Version="4.5.1" />
   </ItemGroup>
 

@@ -44,7 +44,7 @@ namespace TimelapseRecorder
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            FFmpegLoader.FFmpegPath = AppDomain.CurrentDomain.BaseDirectory + "ffmpeg\\x86_64\\";
+            FFmpegLoader.FFmpegPath = AppDomain.CurrentDomain.BaseDirectory + "ffmpeg\\";
             ScreenshotPathTextbox.Text = this.screenshotPath;
             ScreenshotStatusLabel.Text = "";
             for (int i = 1; i <= Screen.AllScreens.Length; i++)
@@ -213,11 +213,25 @@ namespace TimelapseRecorder
 
         private void GenerateVideoButton_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists(screenshotPath))
+            {
+                MessageBox.Show("Selected folder does not exist.");
+                return;
+            }
+
             isGenerating = true;
 
             vps.inputFolderPath = screenshotPath;
             vps.outputVideoPath = screenshotPath + textBox1.Text;
             vps.files.AddRange(Directory.GetFiles(vps.inputFolderPath, "*.jpg", SearchOption.AllDirectories).OrderBy(f => f));
+
+            if (vps.files.Count == 0)
+            {
+                MessageBox.Show("Selected folder contains no screenshots.");
+                vps = new VideoProcessorStructure();
+                return;
+            }
+
             progressBar1.Maximum = vps.files.Count;
 
             DisableVideoControls();
