@@ -70,23 +70,6 @@ namespace TimelapseRecorder
             }
         }
 
-        private void ScreenshotPathTextbox_Click(object sender, EventArgs e)
-        {
-            if (isRecording || isGenerating)
-            {
-                return;
-            }
-
-            folderBrowserDialogScreenshotPath.ShowNewFolderButton = true;
-            DialogResult result = folderBrowserDialogScreenshotPath.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                ScreenshotPathTextbox.Text = folderBrowserDialogScreenshotPath.SelectedPath + "\\";
-                this.screenshotPath = ScreenshotPathTextbox.Text;
-                Environment.SpecialFolder root = folderBrowserDialogScreenshotPath.RootFolder;
-            }
-        }
-
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (isRecording)
@@ -307,6 +290,23 @@ namespace TimelapseRecorder
             this.Text = formTitle;
             EnableVideoControls();
             isGenerating = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (isRecording || isGenerating)
+            {
+                return;
+            }
+
+            folderBrowserDialogScreenshotPath.ShowNewFolderButton = true;
+            DialogResult result = folderBrowserDialogScreenshotPath.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                ScreenshotPathTextbox.Text = folderBrowserDialogScreenshotPath.SelectedPath + "\\";
+                this.screenshotPath = ScreenshotPathTextbox.Text;
+                Environment.SpecialFolder root = folderBrowserDialogScreenshotPath.RootFolder;
+            }
         }
     }
 }

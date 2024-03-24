@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            label8 = new Label();
             includeTaskbarCheckbox = new CheckBox();
             label4 = new Label();
             SelectScreenCombobox = new ComboBox();
@@ -40,6 +41,7 @@
             label2 = new Label();
             IntervalNumericUpDown = new NumericUpDown();
             tabPage2 = new TabPage();
+            label9 = new Label();
             numericUpDown3 = new NumericUpDown();
             fpsLabel = new Label();
             numericUpDown2 = new NumericUpDown();
@@ -58,6 +60,8 @@
             ScreenshotTimer = new System.Windows.Forms.Timer(components);
             VideoGeneratorBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            button1 = new Button();
+            label10 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)IntervalNumericUpDown).BeginInit();
@@ -71,14 +75,15 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(-1, 64);
+            tabControl1.Location = new Point(-1, 94);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(319, 147);
+            tabControl1.Size = new Size(325, 180);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(includeTaskbarCheckbox);
             tabPage1.Controls.Add(label4);
             tabPage1.Controls.Add(SelectScreenCombobox);
@@ -90,15 +95,26 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(311, 119);
+            tabPage1.Size = new Size(317, 152);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Screenshots";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(7, 15);
+            label8.Name = "label8";
+            label8.Size = new Size(234, 15);
+            label8.TabIndex = 13;
+            label8.Text = "Automaticallys take screenshots in interval.";
+            // 
             // includeTaskbarCheckbox
             // 
             includeTaskbarCheckbox.AutoSize = true;
-            includeTaskbarCheckbox.Location = new Point(199, 15);
+            includeTaskbarCheckbox.Checked = true;
+            includeTaskbarCheckbox.CheckState = CheckState.Checked;
+            includeTaskbarCheckbox.Location = new Point(199, 46);
             includeTaskbarCheckbox.Name = "includeTaskbarCheckbox";
             includeTaskbarCheckbox.Size = new Size(106, 19);
             includeTaskbarCheckbox.TabIndex = 12;
@@ -108,7 +124,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(6, 46);
+            label4.Location = new Point(6, 77);
             label4.Name = "label4";
             label4.Size = new Size(78, 15);
             label4.TabIndex = 11;
@@ -117,7 +133,7 @@
             // SelectScreenCombobox
             // 
             SelectScreenCombobox.FormattingEnabled = true;
-            SelectScreenCombobox.Location = new Point(115, 43);
+            SelectScreenCombobox.Location = new Point(115, 74);
             SelectScreenCombobox.Name = "SelectScreenCombobox";
             SelectScreenCombobox.Size = new Size(73, 23);
             SelectScreenCombobox.TabIndex = 10;
@@ -128,7 +144,7 @@
             // 
             ScreenshotStatusLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ScreenshotStatusLabel.AutoSize = true;
-            ScreenshotStatusLabel.Location = new Point(124, 86);
+            ScreenshotStatusLabel.Location = new Point(124, 117);
             ScreenshotStatusLabel.Name = "ScreenshotStatusLabel";
             ScreenshotStatusLabel.RightToLeft = RightToLeft.No;
             ScreenshotStatusLabel.Size = new Size(64, 15);
@@ -140,7 +156,7 @@
             RecordingIndicationLabel.AutoSize = true;
             RecordingIndicationLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             RecordingIndicationLabel.ForeColor = Color.Red;
-            RecordingIndicationLabel.Location = new Point(87, 67);
+            RecordingIndicationLabel.Location = new Point(87, 98);
             RecordingIndicationLabel.Name = "RecordingIndicationLabel";
             RecordingIndicationLabel.Size = new Size(33, 45);
             RecordingIndicationLabel.TabIndex = 9;
@@ -149,7 +165,7 @@
             // 
             // RecordButton
             // 
-            RecordButton.Location = new Point(6, 79);
+            RecordButton.Location = new Point(6, 110);
             RecordButton.Name = "RecordButton";
             RecordButton.Size = new Size(75, 28);
             RecordButton.TabIndex = 7;
@@ -160,7 +176,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(6, 15);
+            label2.Location = new Point(6, 46);
             label2.Name = "label2";
             label2.Size = new Size(103, 15);
             label2.TabIndex = 4;
@@ -168,7 +184,7 @@
             // 
             // IntervalNumericUpDown
             // 
-            IntervalNumericUpDown.Location = new Point(115, 11);
+            IntervalNumericUpDown.Location = new Point(115, 42);
             IntervalNumericUpDown.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             IntervalNumericUpDown.Name = "IntervalNumericUpDown";
             IntervalNumericUpDown.Size = new Size(73, 23);
@@ -178,6 +194,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label9);
             tabPage2.Controls.Add(numericUpDown3);
             tabPage2.Controls.Add(fpsLabel);
             tabPage2.Controls.Add(numericUpDown2);
@@ -192,14 +209,23 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(311, 119);
+            tabPage2.Size = new Size(317, 152);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Video";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(8, 13);
+            label9.Name = "label9";
+            label9.Size = new Size(159, 15);
+            label9.TabIndex = 16;
+            label9.Text = "Generate video from images.";
+            // 
             // numericUpDown3
             // 
-            numericUpDown3.Location = new Point(259, 38);
+            numericUpDown3.Location = new Point(259, 69);
             numericUpDown3.Maximum = new decimal(new int[] { 120, 0, 0, 0 });
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
@@ -210,7 +236,7 @@
             // fpsLabel
             // 
             fpsLabel.AutoSize = true;
-            fpsLabel.Location = new Point(224, 40);
+            fpsLabel.Location = new Point(224, 71);
             fpsLabel.Name = "fpsLabel";
             fpsLabel.Size = new Size(29, 15);
             fpsLabel.TabIndex = 14;
@@ -218,7 +244,7 @@
             // 
             // numericUpDown2
             // 
-            numericUpDown2.Location = new Point(146, 38);
+            numericUpDown2.Location = new Point(146, 69);
             numericUpDown2.Maximum = new decimal(new int[] { 9000, 0, 0, 0 });
             numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
@@ -229,7 +255,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(129, 40);
+            label6.Location = new Point(129, 71);
             label6.Name = "label6";
             label6.Size = new Size(13, 15);
             label6.TabIndex = 12;
@@ -237,7 +263,7 @@
             // 
             // numericUpDown1
             // 
-            numericUpDown1.Location = new Point(73, 38);
+            numericUpDown1.Location = new Point(73, 69);
             numericUpDown1.Maximum = new decimal(new int[] { 9000, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
@@ -248,7 +274,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(9, 40);
+            label3.Location = new Point(9, 71);
             label3.Name = "label3";
             label3.Size = new Size(54, 15);
             label3.TabIndex = 10;
@@ -257,7 +283,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(8, 99);
+            label7.Location = new Point(8, 130);
             label7.Name = "label7";
             label7.Size = new Size(24, 15);
             label7.TabIndex = 9;
@@ -265,14 +291,14 @@
             // 
             // progressBar1
             // 
-            progressBar1.Location = new Point(8, 70);
+            progressBar1.Location = new Point(8, 101);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(183, 26);
             progressBar1.TabIndex = 8;
             // 
             // GenerateVideoButton
             // 
-            GenerateVideoButton.Location = new Point(197, 70);
+            GenerateVideoButton.Location = new Point(197, 101);
             GenerateVideoButton.Name = "GenerateVideoButton";
             GenerateVideoButton.Size = new Size(105, 26);
             GenerateVideoButton.TabIndex = 7;
@@ -282,7 +308,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(73, 9);
+            textBox1.Location = new Point(73, 40);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(229, 23);
             textBox1.TabIndex = 1;
@@ -291,7 +317,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(9, 12);
+            label5.Location = new Point(9, 43);
             label5.Name = "label5";
             label5.Size = new Size(58, 15);
             label5.TabIndex = 0;
@@ -299,11 +325,11 @@
             // 
             // buttonOpenScreenshotPath
             // 
-            buttonOpenScreenshotPath.Location = new Point(201, 25);
+            buttonOpenScreenshotPath.Location = new Point(200, 56);
             buttonOpenScreenshotPath.Name = "buttonOpenScreenshotPath";
             buttonOpenScreenshotPath.Size = new Size(104, 26);
             buttonOpenScreenshotPath.TabIndex = 3;
-            buttonOpenScreenshotPath.Text = "Open Location";
+            buttonOpenScreenshotPath.Text = "Open Folder";
             buttonOpenScreenshotPath.UseVisualStyleBackColor = true;
             buttonOpenScreenshotPath.Click += buttonOpenScreenshotPath_Click;
             // 
@@ -312,18 +338,17 @@
             ScreenshotPathTextbox.Location = new Point(10, 27);
             ScreenshotPathTextbox.Name = "ScreenshotPathTextbox";
             ScreenshotPathTextbox.ReadOnly = true;
-            ScreenshotPathTextbox.Size = new Size(185, 23);
+            ScreenshotPathTextbox.Size = new Size(295, 23);
             ScreenshotPathTextbox.TabIndex = 2;
-            ScreenshotPathTextbox.Click += ScreenshotPathTextbox_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Location = new Point(10, 9);
             label1.Name = "label1";
-            label1.Size = new Size(34, 15);
+            label1.Size = new Size(56, 15);
             label1.TabIndex = 1;
-            label1.Text = "Path:";
+            label1.Text = "Location:";
             // 
             // ScreenshotTimer
             // 
@@ -339,11 +364,32 @@
             // 
             backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             // 
+            // button1
+            // 
+            button1.Location = new Point(10, 56);
+            button1.Name = "button1";
+            button1.Size = new Size(135, 26);
+            button1.TabIndex = 4;
+            button1.Text = "Select another path";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(269, 95);
+            label10.Name = "label10";
+            label10.Size = new Size(37, 15);
+            label10.TabIndex = 14;
+            label10.Text = "v1.0.1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(317, 212);
+            ClientSize = new Size(317, 273);
+            Controls.Add(label10);
+            Controls.Add(button1);
             Controls.Add(tabControl1);
             Controls.Add(buttonOpenScreenshotPath);
             Controls.Add(label1);
@@ -398,5 +444,9 @@
         private Label label6;
         private NumericUpDown numericUpDown1;
         private Label label3;
+        private Button button1;
+        private Label label8;
+        private Label label9;
+        private Label label10;
     }
 }
